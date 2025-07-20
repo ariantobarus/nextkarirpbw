@@ -2,27 +2,30 @@
 /**
  * db.php
  *
- * Database connection and session initialization.
- * This file should be included in every PHP file that requires database access or session management.
+ * Konfigurasi koneksi database, session, dan path dasar aplikasi.
  */
 
-// --- Database Configuration ---
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'projec15_root'); // Replace with your database username
-define('DB_PASSWORD', '@kaesquare123');     // Replace with your database password
-define('DB_NAME', 'projec15_nextkarir_db');
+// --- Konfigurasi Path dan URL ---
 
-// --- Establish Connection ---
+// Ganti nilai ini dengan alamat URL utama situs Anda saat sudah online.
+// PASTIKAN TIDAK ADA TANDA / DI AKHIR
+define('BASE_URL', 'http://kerjaa.project.com'); // CONTOH: Ganti dengan domain Anda
+
+// --- Konfigurasi Database ---
+define('DB_SERVER', 'localhost');
+define('DB_USERNAME', 'projec15_root'); // Ganti dengan username DB hosting Anda
+define('DB_PASSWORD', '@kaesquare123'); // Ganti dengan password DB hosting Anda
+define('DB_NAME', 'projec15_nextkarir_db'); // Ganti dengan nama DB hosting Anda
+
+// --- Membuat Koneksi ---
 $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
-// Check connection for errors
+// Cek koneksi
 if ($conn->connect_error) {
-    // Stop execution and display an error message if connection fails.
     die("Koneksi Gagal: " . $conn->connect_error);
 }
 
-// --- Session Management ---
-// Start a new session or resume the existing one if not already started.
+// --- Manajemen Session ---
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
