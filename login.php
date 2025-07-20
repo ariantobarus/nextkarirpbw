@@ -1,10 +1,10 @@
 <?php
-require_once 'config/db.php';
+require_once __DIR__ . '/config/db.php';
 $errors = [];
 
-// Redirect if user is already logged in
+// Redirect jika pengguna sudah login
 if (isset($_SESSION['user_id'])) {
-    $redirect_url = $_SESSION['role'] == 'company' ? 'admin/dashboard.php' : 'jobseeker/dashboard.php';
+    $redirect_url = $_SESSION['role'] == 'company' ? BASE_URL . '/admin/dashboard.php' : BASE_URL . '/jobseeker/dashboard.php';
     header("Location: " . $redirect_url);
     exit();
 }
@@ -22,17 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $stmt->get_result();
         
         if ($user = $result->fetch_assoc()) {
-            // Verify the password
+            // Verifikasi password
             if (password_verify($password, $user['password'])) {
-                // Login successful: set session variables
+                // Login berhasil: set session variables
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['role'] = $user['role'];
 
-                // Redirect based on role
+                // Arahkan berdasarkan peran
                 if ($user['role'] == 'company') {
-                    header("Location: admin/dashboard.php");
+                    header("Location: " . BASE_URL . "/admin/dashboard.php");
                 } else {
-                    header("Location: jobseeker/dashboard.php");
+                    header("Location: " . BASE_URL . "/jobseeker/dashboard.php");
                 }
                 exit();
             } else {
@@ -51,32 +51,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - NextKarir</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style.css">
 </head>
 <body>
-    <?php include 'partials/header.php'; ?>
-    <div class="form-container">
-        <h2>Login ke Akun Anda</h2>
-        <?php if(!empty($errors)): ?>
-            <div class="message error">
-                <?php foreach($errors as $error): ?>
-                    <p><?= htmlspecialchars($error) ?></p>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        <form action="login.php" method="POST">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
-        </form>
-        <p style="text-align: center; margin-top: 20px;">Belum punya akun? <a href="register.php">Daftar sekarang</a></p>
+    <?php include ROOT_PATH . '/partials/header.php'; ?>
+    <div class="main-content">
+        <div class="form-container">
+            <h2>Login ke Akun Anda</h2>
+            <?php if(!empty($errors)): ?>
+                <div class="message error">
+                    <?php foreach($errors as $error): ?>
+                        <p><?= htmlspecialchars($error) ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+            <form action="<?= BASE_URL ?>/login.php" method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 20px;">Belum punya akun? <a href="<?= BASE_URL ?>/register.php">Daftar sekarang</a></p>
+        </div>
     </div>
-    <?php include 'partials/footer.php'; ?>
+    <?php include ROOT_PATH . '/partials/footer.php'; ?>
 </body>
 </html>

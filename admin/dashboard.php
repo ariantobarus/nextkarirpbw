@@ -1,9 +1,14 @@
 <?php
-require_once '../config/db.php'; // Path disesuaikan
+// ===================================================================
+// FILE: admin/dashboard.php (LENGKAP DAN DIPERBAIKI)
+// ===================================================================
+
+// Memanggil file konfigurasi. Pastikan BASE_URL dan ROOT_PATH sudah didefinisikan di sana.
+require_once '../config/db.php';
 
 // Autentikasi: Pastikan hanya admin/perusahaan yang bisa akses
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'company') {
-    header("Location: /nextkarir/login.php");
+    header("Location: " . BASE_URL . "/login.php");
     exit();
 }
 
@@ -67,94 +72,71 @@ $recent_applicants_stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Admin - NextKarir</title>
-    <link rel="stylesheet" href="../style.css">
+    <title>Dashboard Admin - NextKarir</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style.css">
 </head>
 <body>
-    <?php include '../partials/header.php'; ?>
+    <?php include ROOT_PATH . '/partials/header.php'; ?>
+
     <div class="container">
-    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 1rem;">
-        <img src="../uploads/logos/<?= htmlspecialchars($company['logo']) ?>" alt="Logo" style="width: 80px; height: 80px; object-fit: contain; border-radius: 8px; background-color: #f8f9fa; border: 1px solid #dee2e6;">
-        <div>
-            <h1> <?= htmlspecialchars($company['name']) ?></h1>
-            
+        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 1rem;">
+            <img src="<?= BASE_URL ?>/uploads/logos/<?= htmlspecialchars($company['logo']) ?>" alt="Logo" style="width: 80px; height: 80px; object-fit: contain; border-radius: 8px; background-color: #f8f9fa; border: 1px solid #dee2e6;">
+            <div>
+                <h1>Dashboard <?= htmlspecialchars($company['name']) ?></h1>
+                <p style="margin:0;">Kelola lowongan kerja dan lihat pelamar Anda di satu tempat.</p>
+            </div>
         </div>
-    </div>
 
         <!-- Grid Statistik Cepat -->
         <div class="dashboard-grid" style="margin-top: 30px;">
-            <div class="dashboard-card card-primary">
-                <div class="count"><?= $total_jobs ?></div>
-                <div class="title">Lowongan Aktif</div>
-            </div>
-            <div class="dashboard-card card-info">
-                <div class="count"><?= $total_applicants ?></div>
-                <div class="title">Total Pelamar</div>
-            </div>
-            <div class="dashboard-card card-success">
-                <div class="count"><?= $new_applicants ?></div>
-                <div class="title">Pelamar Baru</div>
-            </div>
+            <div class="dashboard-card card-primary"><div class="count"><?= $total_jobs ?></div><div class="title">Lowongan Aktif</div></div>
+            <div class="dashboard-card card-info"><div class="count"><?= $total_applicants ?></div><div class="title">Total Pelamar</div></div>
+            <div class="dashboard-card card-success"><div class="count"><?= $new_applicants ?></div><div class="title">Pelamar Baru</div></div>
         </div>
 
         <!-- Aksi Cepat -->
         <div class="card" style="margin-top: 30px; padding: 25px;">
             <h4>Aksi Cepat</h4>
             <div class="quick-actions">
-                <a href="post_job.php" class="btn btn-primary">Pasang Lowongan Baru</a>
-                <a href="jobs.php" class="btn btn-secondary">Kelola Semua Lowongan</a>
-                <a href="applicants.php" class="btn btn-secondary">Lihat Semua Pelamar</a>
-                <a href="edit_profile.php" class="btn btn-secondary">Edit Profil Perusahaan</a>
+                <a href="<?= BASE_URL ?>/admin/post_job.php" class="btn btn-primary">Pasang Lowongan Baru</a>
+                <a href="<?= BASE_URL ?>/admin/jobs.php" class="btn btn-secondary">Kelola Semua Lowongan</a>
+                <a href="<?= BASE_URL ?>/admin/applicants.php" class="btn btn-secondary">Lihat Semua Pelamar</a>
+                <a href="<?= BASE_URL ?>/admin/edit_profile.php" class="btn btn-secondary">Edit Profil Perusahaan</a>
             </div>
         </div>
 
         <!-- Dua Kolom: Lowongan Terbaru & Pelamar Terbaru -->
         <div class="dashboard-columns">
-            <!-- Kolom Lowongan Terbaru -->
             <div class="column">
                 <h2 style="margin-top: 40px;">Lowongan Terbaru Anda</h2>
                 <?php if (!empty($recent_jobs)): ?>
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Posisi</th>
-                                <th>Lokasi</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Posisi</th><th>Lokasi</th><th>Aksi</th></tr></thead>
                         <tbody>
                             <?php foreach ($recent_jobs as $job): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($job['title']) ?></td>
                                     <td><?= htmlspecialchars($job['location']) ?></td>
-                                    <td><a href="applicants.php?job_id=<?= $job['id'] ?>">Lihat Pelamar</a></td>
+                                    <td><a href="<?= BASE_URL ?>/admin/applicants.php?job_id=<?= $job['id'] ?>">Lihat Pelamar</a></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 <?php else: ?>
-                    <div class="message info">Anda belum memasang lowongan. <a href="post_job.php">Pasang sekarang!</a></div>
+                    <div class="message info">Anda belum memasang lowongan. <a href="<?= BASE_URL ?>/admin/post_job.php">Pasang sekarang!</a></div>
                 <?php endif; ?>
             </div>
-
-            <!-- Kolom Pelamar Terbaru -->
             <div class="column">
                 <h2 style="margin-top: 40px;">Pelamar Terbaru</h2>
                 <?php if (!empty($recent_applicants)): ?>
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Nama Pelamar</th>
-                                <th>Posisi yang Dilamar</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Nama Pelamar</th><th>Posisi yang Dilamar</th><th>Aksi</th></tr></thead>
                         <tbody>
                             <?php foreach ($recent_applicants as $applicant): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($applicant['full_name']) ?></td>
                                     <td><?= htmlspecialchars($applicant['title']) ?></td>
-                                    <td><a href="applicant_detail.php?id=<?= $applicant['application_id'] ?>">Lihat Detail</a></td>
+                                    <td><a href="<?= BASE_URL ?>/admin/applicant_detail.php?id=<?= $applicant['application_id'] ?>">Lihat Detail</a></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -166,6 +148,6 @@ $recent_applicants_stmt->close();
         </div>
     </div>
 
-    <?php include '../partials/footer.php'; ?>
+    <?php include ROOT_PATH . '/partials/footer.php'; ?>
 </body>
 </html>

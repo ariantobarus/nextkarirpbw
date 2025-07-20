@@ -1,13 +1,13 @@
 <?php
-// Start the session to access session variables.
-session_start();
+// Memanggil file konfigurasi untuk mengakses BASE_URL dan memulai session
+require_once __DIR__ . '/config/db.php';
 
-// Unset all session variables.
+// Menghapus semua variabel sesi.
 $_SESSION = [];
 
-// Destroy the session.
+// Menghancurkan sesi.
 session_destroy();
 
-// Redirect to the homepage.
-header("Location: index.php");
-exit();
+// Mengarahkan pengguna kembali ke halaman utama.
+header("Location: " . BASE_URL . "/index.php");
+exit(); // Pastikan tidak ada kode lain yang dieksekusi setelah redirect.

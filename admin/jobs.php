@@ -3,7 +3,7 @@ require_once '../config/db.php';
 
 // Autentikasi & Otorisasi
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'company') {
-    header("Location: /nextkarir/login.php");
+    header("Location: " . BASE_URL . "/login.php");
     exit();
 }
 
@@ -25,6 +25,7 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
     $stmt->close();
 }
 
+// Tampilkan pesan sukses setelah membuat/mengedit lowongan
 if (isset($_GET['status']) && $_GET['status'] == 'success') {
     $message = '<div class="message success">Lowongan berhasil disimpan.</div>';
 }
@@ -42,48 +43,50 @@ $stmt->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Lowongan - NextKarir</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style.css">
 </head>
 <body>
-    <?php include '../partials/header.php'; ?>
+    <?php include ROOT_PATH . '/partials/header.php'; ?>
     <div class="container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1>Kelola Lowongan Anda</h1>
-            <a href="post_job.php" class="btn btn-primary">Pasang Lowongan Baru</a>
+            <a href="<?= BASE_URL ?>/admin/post_job.php" class="btn btn-primary">Pasang Lowongan Baru</a>
         </div>
         
         <?= $message ?>
 
         <?php if (!empty($jobs)): ?>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Judul Posisi</th>
-                        <th>Lokasi</th>
-                        <th>Tanggal Posting</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($jobs as $job): ?>
+            <div class="card" style="padding: 0;">
+                <table class="data-table">
+                    <thead>
                         <tr>
-                            <td><?= htmlspecialchars($job['title']) ?></td>
-                            <td><?= htmlspecialchars($job['location']) ?></td>
-                            <td><?= date('d F Y', strtotime($job['posted_at'])) ?></td>
-                            <td>
-                                <a href="applicants.php?job_id=<?= $job['id'] ?>" style="margin-right:10px;">Pelamar</a>
-                                <a href="post_job.php?id=<?= $job['id'] ?>" style="margin-right:10px;">Edit</a>
-                                <a href="jobs.php?delete_id=<?= $job['id'] ?>" class="text-danger btn-delete">Hapus</a>
-                            </td>
+                            <th>Judul Posisi</th>
+                            <th>Lokasi</th>
+                            <th>Tanggal Posting</th>
+                            <th style="width: 25%;">Aksi</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($jobs as $job): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($job['title']) ?></td>
+                                <td><?= htmlspecialchars($job['location']) ?></td>
+                                <td><?= date('d F Y', strtotime($job['posted_at'])) ?></td>
+                                <td>
+                                    <a href="<?= BASE_URL ?>/admin/applicants.php?job_id=<?= $job['id'] ?>" class="btn btn-info" style="margin-right:5px; background-color: #17a2b8;">Pelamar</a>
+                                    <a href="<?= BASE_URL ?>/admin/post_job.php?id=<?= $job['id'] ?>" class="btn btn-secondary" style="margin-right:5px;">Edit</a>
+                                    <a href="<?= BASE_URL ?>/admin/jobs.php?delete_id=<?= $job['id'] ?>" class="btn btn-danger btn-delete">Hapus</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php else: ?>
-            <div class="message info">Anda belum memiliki lowongan aktif. <a href="post_job.php">Pasang lowongan pertama Anda!</a></div>
+            <div class="message info">Anda belum memiliki lowongan aktif. <a href="<?= BASE_URL ?>/admin/post_job.php">Pasang lowongan pertama Anda!</a></div>
         <?php endif; ?>
     </div>
-    <?php include '../partials/footer.php'; ?>
-    <script src="../script.js"></script>
+    <?php include ROOT_PATH . '/partials/footer.php'; ?>
+    <script src="<?= BASE_URL ?>/script.js"></script>
 </body>
 </html>

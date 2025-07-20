@@ -1,9 +1,8 @@
 <?php
 /**
- * footer.php (Redesigned)
+ * footer.php
  *
- * Menampilkan footer situs dengan layout multi-kolom yang modern.
- * Didesain berdasarkan gambar yang diberikan oleh pengguna.
+ * Semua link dan gambar sekarang menggunakan BASE_URL agar selalu benar.
  */
 ?>
 <footer class="site-footer">
@@ -11,8 +10,9 @@
         <div class="footer-grid">
             <!-- Kolom 1: Tentang NextKarir & Social Media -->
             <div class="footer-col about">
-                <a href="/nextkarir/index.php" class="footer-logo">
-    <img src="/nextkarir/NextKarir.png" alt="Logo NextKarir Footer"></a>
+                <a href="<?= BASE_URL ?>/index.php" class="footer-logo">
+                    <img src="<?= BASE_URL ?>/NextKarir.png" alt="Logo NextKarir Footer">
+                </a>
                 <p class="footer-desc">
                     NextKarir adalah Situs lowongan kerja (Job Portal) layanan berbasis software fokus dibidang rekrutmen untuk mempermudah cari pekerjaan dan perekrutan karyawan.
                 </p>
@@ -33,7 +33,7 @@
             <div class="footer-col links">
                 <h4>Tentang Kami</h4>
                 <ul>
-                    <li><a href="/nextkarir/about.php">Hubungi Kami</a></li>
+                    <li><a href="<?= BASE_URL ?>/about.php">Hubungi Kami</a></li>
                     <li><a href="#">Pusat Bantuan</a></li>
                     <li><a href="#">Logo</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
@@ -45,9 +45,9 @@
             <div class="footer-col links">
                 <h4>Pencari Kerja</h4>
                 <ul>
-                    <li><a href="/nextkarir/register.php?role=job_seeker">Registrasi Pencari Kerja</a></li>
-                    <li><a href="/nextkarir/jobseeker/edit_profile.php">Buat Resume Online</a></li>
-                    <li><a href="/nextkarir/search.php">Cari Lowongan Kerja</a></li>
+                    <li><a href="<?= BASE_URL ?>/register.php?role=job_seeker">Registrasi Pencari Kerja</a></li>
+                    <li><a href="<?= BASE_URL ?>/jobseeker/edit_profile.php">Buat Resume Online</a></li>
+                    <li><a href="<?= BASE_URL ?>/search.php">Cari Lowongan Kerja</a></li>
                     <li><a href="#">Remote Jobs</a></li>
                     <li><a href="#">Jobs Alert</a></li>
                 </ul>
@@ -57,8 +57,8 @@
             <div class="footer-col links">
                 <h4>Perusahaan</h4>
                 <ul>
-                    <li><a href="/nextkarir/register.php?role=company">Registrasi Perusahaan</a></li>
-                    <li><a href="/nextkarir/admin/post_job.php">Pasang Loker</a></li>
+                    <li><a href="<?= BASE_URL ?>/register.php?role=company">Registrasi Perusahaan</a></li>
+                    <li><a href="<?= BASE_URL ?>/admin/post_job.php">Pasang Loker</a></li>
                     <li><a href="#">Produk dan Layanan</a></li>
                     <li><a href="#">Harga</a></li>
                 </ul>

@@ -1,5 +1,5 @@
 <?php
-require_once 'config/db.php';
+require_once __DIR__ . '/config/db.php';
 $errors = [];
 $success_message = '';
 
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->close();
 
             $conn->commit();
-            $success_message = "Registrasi berhasil! Silakan <a href='login.php'>login</a>.";
+            $success_message = "Registrasi berhasil! Silakan <a href='" . BASE_URL . "/login.php'>login</a>.";
 
         } catch (mysqli_sql_exception $exception) {
             $conn->rollback();
@@ -76,47 +76,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrasi - NextKarir</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style.css">
 </head>
 <body>
-    <?php include 'partials/header.php'; ?>
-    <div class="form-container">
-        <h2>Buat Akun Baru</h2>
-        <?php if(!empty($errors)): ?>
-            <div class="message error">
-                <?php foreach($errors as $error): ?>
-                    <p><?= htmlspecialchars($error) ?></p>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        <?php if($success_message): ?>
-            <div class="message success"><?= $success_message ?></div>
-        <?php else: ?>
-        <form action="register.php" method="POST">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required value="<?= isset($email) ? htmlspecialchars($email) : '' ?>">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="password_confirm">Konfirmasi Password</label>
-                <input type="password" id="password_confirm" name="password_confirm" required>
-            </div>
-            <div class="form-group">
-                <label>Saya mendaftar sebagai:</label>
-                <select name="role" required>
-                    <option value="job_seeker" <?= (isset($role) && $role == 'job_seeker') ? 'selected' : '' ?>>Pencari Kerja</option>
-                    <option value="company" <?= (isset($role) && $role == 'company') ? 'selected' : '' ?>>Perusahaan</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
-        </form>
-        <p style="text-align: center; margin-top: 20px;">Sudah punya akun? <a href="login.php">Login di sini</a></p>
-        <?php endif; ?>
+    <?php include ROOT_PATH . '/partials/header.php'; ?>
+    <div class="main-content">
+        <div class="form-container">
+            <h2>Buat Akun Baru</h2>
+            <?php if(!empty($errors)): ?>
+                <div class="message error">
+                    <?php foreach($errors as $error): ?>
+                        <p><?= htmlspecialchars($error) ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+            <?php if($success_message): ?>
+                <div class="message success"><?= $success_message ?></div>
+            <?php else: ?>
+            <form action="<?= BASE_URL ?>/register.php" method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required value="<?= isset($email) ? htmlspecialchars($email) : '' ?>">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="password_confirm">Konfirmasi Password</label>
+                    <input type="password" id="password_confirm" name="password_confirm" required>
+                </div>
+                <div class="form-group">
+                    <label>Saya mendaftar sebagai:</label>
+                    <select name="role" required>
+                        <option value="job_seeker" <?= (isset($role) && $role == 'job_seeker') ? 'selected' : '' ?>>Pencari Kerja</option>
+                        <option value="company" <?= (isset($role) && $role == 'company') ? 'selected' : '' ?>>Perusahaan</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+            </form>
+            <p style="text-align: center; margin-top: 20px;">Sudah punya akun? <a href="<?= BASE_URL ?>/login.php">Login di sini</a></p>
+            <?php endif; ?>
+        </div>
     </div>
-    <?php include 'partials/footer.php'; ?>
+    <?php include ROOT_PATH . '/partials/footer.php'; ?>
 </body>
 </html>

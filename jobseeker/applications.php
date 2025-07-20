@@ -3,7 +3,7 @@ require_once '../config/db.php';
 
 // Autentikasi: Pastikan hanya job seeker yang bisa akses
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'job_seeker') {
-    header("Location: /nextkarir/login.php");
+    header("Location: " . BASE_URL . "/login.php");
     exit();
 }
 
@@ -40,10 +40,10 @@ $stmt->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat Lamaran - NextKarir</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style.css">
 </head>
 <body>
-    <?php include '../partials/header.php'; ?>
+    <?php include ROOT_PATH . '/partials/header.php'; ?>
     <div class="container">
         <h1>Riwayat Lamaran Anda</h1>
         <p>Pantau semua perjalanan karir yang telah Anda mulai di sini.</p>
@@ -51,38 +51,40 @@ $stmt->close();
         <?= $message ?>
 
         <?php if (!empty($applications)): ?>
-            <table class="data-table" style="margin-top: 20px;">
-                <thead>
-                    <tr>
-                        <th>Posisi</th>
-                        <th>Perusahaan</th>
-                        <th>Tanggal Melamar</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($applications as $app): ?>
+            <div class="card" style="padding: 0; margin-top: 20px;">
+                <table class="data-table">
+                    <thead>
                         <tr>
-                            <td><?= htmlspecialchars($app['title']) ?></td>
-                            <td><?= htmlspecialchars($app['company_name']) ?></td>
-                            <td><?= date('d F Y', strtotime($app['application_date'])) ?></td>
-                            <td>
-                                <span class="status-badge status-<?= htmlspecialchars($app['status']) ?>">
-                                    <?= ucfirst(str_replace('_', ' ', $app['status'])) ?>
-                                </span>
-                            </td>
-                            <td>
-                                <a href="/nextkarir/job_detail.php?id=<?= $app['job_id'] ?>">Lihat Lowongan</a>
-                            </td>
+                            <th>Posisi</th>
+                            <th>Perusahaan</th>
+                            <th>Tanggal Melamar</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($applications as $app): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($app['title']) ?></td>
+                                <td><?= htmlspecialchars($app['company_name']) ?></td>
+                                <td><?= date('d F Y', strtotime($app['application_date'])) ?></td>
+                                <td>
+                                    <span class="status-badge status-<?= htmlspecialchars($app['status']) ?>">
+                                        <?= ucfirst(str_replace('_', ' ', $app['status'])) ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="<?= BASE_URL ?>/job_detail.php?id=<?= $app['job_id'] ?>" class="btn btn-secondary">Lihat Lowongan</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php else: ?>
-            <div class="message info" style="margin-top: 20px;">Anda belum pernah melamar pekerjaan. <a href="/nextkarir/search.php">Cari lowongan sekarang!</a></div>
+            <div class="message info" style="margin-top: 20px;">Anda belum pernah melamar pekerjaan. <a href="<?= BASE_URL ?>/search.php">Cari lowongan sekarang!</a></div>
         <?php endif; ?>
     </div>
-    <?php include '../partials/footer.php'; ?>
+    <?php include ROOT_PATH . '/partials/footer.php'; ?>
 </body>
 </html>

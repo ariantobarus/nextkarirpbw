@@ -1,7 +1,8 @@
 <?php
-require_once 'config/db.php';
+// Memanggil file konfigurasi. __DIR__ memastikan path selalu benar.
+require_once __DIR__ . '/config/db.php';
 
-// Daftar bidang pekerjaan yang tersedia (dengan tambahan Pendidikan & Fashion)
+// Daftar bidang pekerjaan yang tersedia
 $job_fields = [
     'Teknologi Informasi' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>',
     'Keuangan & Akuntansi' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
@@ -27,16 +28,16 @@ $stmt->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextKarir - Temukan Pekerjaan Impian Anda</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style.css">
 </head>
 <body>
-    <?php include 'partials/header.php'; ?>
+    <?php include ROOT_PATH . '/partials/header.php'; ?>
     <div class="hero-wrapper">
         <div class="container">
             <div class="hero-section">
                 <h1>Temukan Pekerjaan Impian Anda</h1>
                 <p>Jelajahi ribuan lowongan dari perusahaan-perusahaan terbaik di Indonesia.</p>
-                <form action="search.php" method="GET" class="hero-search-form"><input type="text" name="q" placeholder="Contoh: Web Developer" required><button type="submit">Cari</button></form>
+                <form action="<?= BASE_URL ?>/search.php" method="GET" class="hero-search-form"><input type="text" name="q" placeholder="Contoh: Web Developer" required><button type="submit">Cari</button></form>
             </div>
         </div>
     </div>
@@ -46,7 +47,7 @@ $stmt->close();
                 <h2>Jelajahi Berdasarkan Bidang</h2>
                 <div class="category-grid">
                     <?php foreach ($job_fields as $field => $icon): ?>
-                        <a href="search.php?field=<?= urlencode($field) ?>" class="category-card card"><?= $icon ?><h4><?= $field ?></h4></a>
+                        <a href="<?= BASE_URL ?>/search.php?field=<?= urlencode($field) ?>" class="category-card card"><?= $icon ?><h4><?= $field ?></h4></a>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -55,23 +56,23 @@ $stmt->close();
                 <?php if (!empty($latest_jobs)): ?>
                     <?php foreach ($latest_jobs as $job): ?>
                         <div class="card job-card">
-                            <img src="uploads/logos/<?= htmlspecialchars($job['logo']) ?>" alt="Logo">
+                            <img src="<?= BASE_URL ?>/uploads/logos/<?= htmlspecialchars($job['logo']) ?>" alt="Logo">
                             <div>
-                                <h3><a href="job_detail.php?id=<?= $job['id'] ?>"><?= htmlspecialchars($job['title']) ?></a></h3>
+                                <h3><a href="<?= BASE_URL ?>/job_detail.php?id=<?= $job['id'] ?>"><?= htmlspecialchars($job['title']) ?></a></h3>
                                 <p class="company-name"><?= htmlspecialchars($job['company_name']) ?></p>
                                 <div class="details"><span>📍 <?= htmlspecialchars($job['location']) ?></span></div>
                             </div>
-                            <a href="job_detail.php?id=<?= $job['id'] ?>" class="btn btn-primary">Detail</a>
+                            <a href="<?= BASE_URL ?>/job_detail.php?id=<?= $job['id'] ?>" class="btn btn-primary">Detail</a>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div class="message info">Belum ada lowongan yang tersedia.</div>
                 <?php endif; ?>
             </div>
-            <div style="text-align: center; margin-top: 40px;"><a href="search.php" class="btn btn-secondary">Lihat Semua Lowongan</a></div>
+            <div style="text-align: center; margin-top: 40px;"><a href="<?= BASE_URL ?>/search.php" class="btn btn-secondary">Lihat Semua Lowongan</a></div>
             <div class="promo-section card">
                 <div class="promo-grid">
-                    <div class="promo-image-col"><img src="promosi.png" alt="Promosi Job Fair"></div>
+                    <div class="promo-image-col"><img src="<?= BASE_URL ?>/promosi.png" alt="Promosi Job Fair"></div>
                     <div class="promo-text-col">
                         <h4 class="promo-pre-header"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v1a.5.5 0 0 1-1 0v-1a1.5 1.5 0 0 0-3 0v1a.5.5 0 0 1-1 0v-1z"/><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h6a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5v-7zM5 6a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.5-.5H5z"/></svg> Jobfair oleh NextKarir</h4>
                         <h2>Hadiri job fair kami dan temukan peluang karirmu!</h2>
@@ -97,15 +98,15 @@ $stmt->close();
                 <div class="cta-text">
                     <h2>Temukan pekerjaan yang diinginkan</h2>
                     <p>Dapatkan kemudahan akses ke berbagai daftar pekerjaan, dan informasi tentang lowongan pekerjaan terbaru.</p>
-                    <a href="search.php" class="btn btn-light">Cari Lowongan Sekarang</a>
+                    <a href="<?= BASE_URL ?>/search.php" class="btn btn-light">Cari Lowongan Sekarang</a>
                 </div>
                 <div class="cta-image">
-                    <img src="CTA.png" alt="Temukan Pekerjaan">
+                    <img src="https://placehold.co/600x400/FFFFFF/1A73E8?text=Gambar+Anda" alt="Temukan Pekerjaan">
                 </div>
             </div>
         </div>
     </div>
 
-    <?php include 'partials/footer.php'; ?>
+    <?php include ROOT_PATH . '/partials/footer.php'; ?>
 </body>
 </html>

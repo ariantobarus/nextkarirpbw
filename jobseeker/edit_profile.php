@@ -3,7 +3,7 @@ require_once '../config/db.php';
 
 // Autentikasi: Pastikan hanya job seeker yang bisa akses
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'job_seeker') {
-    header("Location: /nextkarir/login.php");
+    header("Location: " . BASE_URL . "/login.php");
     exit();
 }
 
@@ -96,10 +96,10 @@ $stmt->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profil - NextKarir</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style.css">
 </head>
 <body>
-    <?php include '../partials/header.php'; ?>
+    <?php include ROOT_PATH . '/partials/header.php'; ?>
     <div class="container">
         <div class="form-container" style="max-width: 800px;">
             <h2>Lengkapi Profil Anda</h2>
@@ -110,10 +110,10 @@ $stmt->close();
             <?php endif; ?>
 
             <?php if ($success_message): ?>
-                <div class="message success"><p><?= htmlspecialchars($success_message) ?> <a href="dashboard.php">Kembali ke Dashboard</a></p></div>
+                <div class="message success"><p><?= htmlspecialchars($success_message) ?> <a href="<?= BASE_URL ?>/jobseeker/dashboard.php">Kembali ke Dashboard</a></p></div>
             <?php endif; ?>
 
-            <form action="edit_profile.php" method="POST" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/jobseeker/edit_profile.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="full_name">Nama Lengkap</label>
                     <input type="text" id="full_name" name="full_name" value="<?= htmlspecialchars($profile['full_name'] ?? '') ?>" required>
@@ -151,7 +151,7 @@ $stmt->close();
                     <input type="file" id="resume" name="resume" accept=".pdf">
                     <?php if (!empty($profile['resume_path'])): ?>
                         <p style="font-size: 0.9em; margin-top: 10px;">
-                            File saat ini: <a href="../uploads/resumes/<?= htmlspecialchars($profile['resume_path']) ?>" target="_blank"><?= htmlspecialchars($profile['resume_path']) ?></a>
+                            File saat ini: <a href="<?= BASE_URL ?>/uploads/resumes/<?= htmlspecialchars($profile['resume_path']) ?>" target="_blank"><?= htmlspecialchars($profile['resume_path']) ?></a>
                         </p>
                     <?php endif; ?>
                 </div>
@@ -159,6 +159,6 @@ $stmt->close();
             </form>
         </div>
     </div>
-    <?php include '../partials/footer.php'; ?>
+    <?php include ROOT_PATH . '/partials/footer.php'; ?>
 </body>
 </html>
