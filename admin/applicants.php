@@ -1,9 +1,8 @@
-<?php
 require_once '../config/db.php';
 
 // Autentikasi & Otorisasi
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'company') {
-    header("Location: /nextkarir/login.php");
+    header("Location: " . BASE_URL . "/login.php");
     exit();
 }
 
@@ -44,14 +43,14 @@ $stmt->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Pelamar - NextKarir</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style.css">
 </head>
 <body>
-    <?php include '../partials/header.php'; ?>
+    <?php include ROOT_PATH . '/partials/header.php'; ?>
     <div class="container">
         <h1>Daftar Pelamar</h1>
         
-        <form action="applicants.php" method="GET" style="margin-bottom: 20px;">
+        <form action="<?= BASE_URL ?>/admin/applicants.php" method="GET" style="margin-bottom: 20px;">
             <label for="job_id">Filter berdasarkan Lowongan:</label>
             <select name="job_id" id="job_id" onchange="this.form.submit()">
                 <option value="">Semua Lowongan</option>
@@ -81,7 +80,7 @@ $stmt->close();
                             <td><?= htmlspecialchars($app['title']) ?></td>
                             <td><?= date('d F Y', strtotime($app['application_date'])) ?></td>
                             <td><span class="status-badge status-<?= $app['status'] ?>"><?= ucfirst(str_replace('_', ' ', $app['status'])) ?></span></td>
-                            <td><a href="applicant_detail.php?id=<?= $app['id'] ?>">Lihat Detail</a></td>
+                            <td><a href="<?= BASE_URL ?>/admin/applicant_detail.php?id=<?= $app['id'] ?>">Lihat Detail</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -90,6 +89,6 @@ $stmt->close();
             <div class="message info">Belum ada pelamar yang masuk untuk kriteria ini.</div>
         <?php endif; ?>
     </div>
-    <?php include '../partials/footer.php'; ?>
+    <?php include ROOT_PATH . '/partials/footer.php'; ?>
 </body>
 </html>

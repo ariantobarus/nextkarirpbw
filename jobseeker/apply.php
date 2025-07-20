@@ -3,13 +3,13 @@ require_once '../config/db.php';
 
 // Autentikasi: Pastikan hanya job seeker yang bisa akses
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'job_seeker') {
-    header("Location: /nextkarir/login.php");
+    header("Location: " . BASE_URL . "/login.php");
     exit();
 }
 
 // Validasi: Pastikan ID lowongan ada dan merupakan angka
 if (!isset($_GET['job_id']) || !is_numeric($_GET['job_id'])) {
-    header("Location: /nextkarir/search.php");
+    header("Location: " . BASE_URL . "/search.php");
     exit();
 }
 
@@ -33,7 +33,7 @@ $stmt->bind_param("ii", $job_id, $job_seeker_id);
 $stmt->execute();
 if ($stmt->get_result()->num_rows > 0) {
     // Jika sudah, redirect ke halaman riwayat dengan pesan
-    header("Location: applications.php?status=already_applied");
+    header("Location: " . BASE_URL . "/jobseeker/applications.php?status=already_applied");
     exit();
 }
 $stmt->close();
@@ -44,11 +44,11 @@ $stmt->bind_param("ii", $job_id, $job_seeker_id);
 
 if ($stmt->execute()) {
     // Jika berhasil, redirect ke halaman riwayat dengan pesan sukses
-    header("Location: applications.php?status=success");
+    header("Location: " . BASE_URL . "/jobseeker/applications.php?status=success");
     exit();
 } else {
     // Jika gagal, bisa redirect dengan pesan error
-    header("Location: /nextkarir/job_detail.php?id=$job_id&error=apply_failed");
+    header("Location: " . BASE_URL . "/job_detail.php?id=$job_id&error=apply_failed");
     exit();
 }
 $stmt->close();
